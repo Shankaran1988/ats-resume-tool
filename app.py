@@ -9,23 +9,23 @@ st.set_page_config(page_title="ATS Resume Optimizer", layout="centered")
 st.title("ATS Resume Optimizer")
 st.write("Upload your resume and paste the job description to generate an ATS-optimized resume and cover letter.")
 
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=st.secrets["OPENAI_API_KEY"],
+    project=st.secrets["OPENAI_PROJECT_ID"]
+)
 
 resume_file = st.file_uploader("Upload Resume (PDF or DOCX)", type=["pdf", "docx"])
 jd = st.text_area("Paste Job Description", height=250)
 
 def generate_text(prompt):
-    try:
-        response = client.responses.create(
-            model="gpt-4o-mini",
-            input=[
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ]
-        )
-        return response.output_text
+    response = client.responses.create(
+        model="gpt-4o-mini",
+        input=prompt
+    )
+    return response.output_text
+    
     except Exception as e:
         return f"ERROR FROM OPENAI: {str(e)}" 
     
@@ -92,6 +92,7 @@ JOB DESCRIPTION:
             cover_docx,
             file_name="Cover_Letter.docx"
         )
+
 
 
 
