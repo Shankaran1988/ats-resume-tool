@@ -24,10 +24,7 @@ def generate_text(prompt):
         model="gpt-4o-mini",
         input=prompt
     )
-    return response.output_text
-    
-    except Exception as e:
-        return f"ERROR FROM OPENAI: {str(e)}" 
+    return response.output_text 
     
 def create_docx(text):
     doc = Document()
@@ -92,6 +89,7 @@ JOB DESCRIPTION:
             cover_docx,
             file_name="Cover_Letter.docx"
         )
+
 
 
 
