@@ -12,8 +12,7 @@ st.write("Upload your resume and paste the job description to generate an ATS-op
 from openai import OpenAI
 
 client = OpenAI(
-    api_key=st.secrets["OPENAI_API_KEY"],
-    project=st.secrets["OPENAI_PROJECT_ID"]
+    api_key=st.secrets["OPENAI_API_KEY"]
 )
 
 resume_file = st.file_uploader("Upload Resume (PDF or DOCX)", type=["pdf", "docx"])
@@ -89,6 +88,7 @@ JOB DESCRIPTION:
             cover_docx,
             file_name="Cover_Letter.docx"
         )
+
 
 
 
