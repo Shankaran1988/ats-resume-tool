@@ -19,11 +19,14 @@ resume_file = st.file_uploader("Upload Resume (PDF or DOCX)", type=["pdf", "docx
 jd = st.text_area("Paste Job Description", height=250)
 
 def generate_text(prompt):
-    response = client.responses.create(
-        model="gpt-4o-mini",
-        input=prompt
-    )
-    return response.output_text 
+    try:
+        response = client.responses.create(
+            model="gpt-4o-mini",
+            input=prompt
+        )
+        return response.output_text
+    except Exception as e:
+        return f"OPENAI ERROR: {e} 
     
 def create_docx(text):
     doc = Document()
@@ -69,7 +72,7 @@ JOB DESCRIPTION:
 {jd}
 """
 
-            optimized_resume = generate_text(resume_prompt)
+            optimized_resume = generate_text("Says OK")
             cover_letter = generate_text(cover_prompt)
 
             resume_docx = create_docx(optimized_resume)
@@ -88,6 +91,7 @@ JOB DESCRIPTION:
             cover_docx,
             file_name="Cover_Letter.docx"
         )
+
 
 
 
