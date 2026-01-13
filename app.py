@@ -26,7 +26,7 @@ def generate_text(prompt):
         )
         return response.output_text
     except Exception as e:
-        return f"OPENAI ERROR: {e} 
+        return "OPENAI ERROR: " + str(e) 
     
 def create_docx(text):
     doc = Document()
@@ -91,6 +91,7 @@ JOB DESCRIPTION:
             cover_docx,
             file_name="Cover_Letter.docx"
         )
+
 
 
 
