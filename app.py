@@ -15,15 +15,11 @@ resume_file = st.file_uploader("Upload Resume (PDF or DOCX)", type=["pdf", "docx
 jd = st.text_area("Paste Job Description", height=250)
 
 def generate_text(prompt):
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "You are an ATS resume optimization expert."},
-            {"role": "user", "content": prompt}
-        ],
-        temperature=0.2
+    response = client.responses.create(
+        model="gpt-4.1-mini",
+        input=prompt
     )
-    return response.choices[0].message.content
+    return response.output_text    
     
 def create_docx(text):
     doc = Document()
@@ -88,4 +84,5 @@ JOB DESCRIPTION:
             cover_docx,
             file_name="Cover_Letter.docx"
         )
+
 
