@@ -1,5 +1,5 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 from docx import Document
 from io import BytesIO
 import textwrap
@@ -9,19 +9,22 @@ st.set_page_config(page_title="ATS Resume Optimizer", layout="centered")
 st.title("ATS Resume Optimizer")
 st.write("Upload your resume and paste the job description to generate an ATS-optimized resume and cover letter.")
 
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 resume_file = st.file_uploader("Upload Resume (PDF or DOCX)", type=["pdf", "docx"])
 jd = st.text_area("Paste Job Description", height=250)
 
 def generate_text(prompt):
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}],
+        messages=[
+            {"role": "system", "content": "You are an ATS resume optimization expert."},
+            {"role": "user", "content": prompt}
+        ],
         temperature=0.2
     )
     return response.choices[0].message.content
-
+    
 def create_docx(text):
     doc = Document()
     for line in text.split("\n"):
@@ -85,3 +88,4 @@ JOB DESCRIPTION:
             cover_docx,
             file_name="Cover_Letter.docx"
         )
+
